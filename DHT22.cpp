@@ -164,8 +164,8 @@ void DHT22::fetchData() {
 
     // Compute temperature and relative humidity if data is valid
     union {
-      int8_t bytes[2];
-      int16_t value;
+      byte bytes[2];
+      short value;
     };
     int8_t checksum = m_data[0] + m_data[1] + m_data[2] + m_data[3];
     if (m_data[4] == checksum) {
