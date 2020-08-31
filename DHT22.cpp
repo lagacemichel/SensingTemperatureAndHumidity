@@ -37,7 +37,7 @@
 #define TIMEOUT TIMEOUT_MICROSECONDS/CYCLES_PER_COUNT*F_CPU/1000000
 #define ONE_SECOND 1000
 #define TWO_SECONDS 2000
-#define TWO_MILLI_SECONDS 2
+#define TWO_MILLISECONDS 2
 
 
 
@@ -122,7 +122,7 @@ void DHT22::fetchData() {
     // Send request signal to reMad temperature and relative humidity from device.
     pinMode(m_port, OUTPUT);
     digitalWrite(m_port, LOW);
-    delay(TWO_MILLI_SECONDS);
+    delay(TWO_MILLISECONDS);
     pinMode(m_port, INPUT_PULLUP);
 
     // Since timings are critical, prevent interrupts while DHT22 transmits
