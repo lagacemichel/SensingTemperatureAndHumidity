@@ -60,7 +60,7 @@ class DHT22 {
     
   private:
     int m_port;               // I/O pin connected to sensor
-    int8_t m_data[5];         // Data read from DHT22 sensor
+    byte m_data[5];         // Data read from DHT22 sensor
     unsigned long m_lastRead; // Last time data was read in milliseconds since program start
     float m_temperature;      // Temperature in degrees Celsius
     float m_relativeHumidity; // Relative humidity in %
