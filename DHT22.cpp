@@ -163,8 +163,8 @@ void DHT22::fetchData() {
     // Compute temperature and relative humidity if data is valid
     byte checksum = m_data[0] + m_data[1] + m_data[2] + m_data[3];
     if (m_data[4] == checksum) {
-      m_relativeHumidity = (float(m_data[0])*256.0 + float(m_data[1]))/10.0;
-      m_temperature = (float(m_data[2])*256.0 + float(m_data[3]))/10.0;
+      m_relativeHumidity = int((m_data[0] << 8) + m_data[1])/10.0;
+      m_temperature = int((m_data[2] << 8) + m_data[3])/10.0;
     }
     else {
       m_relativeHumidity = 0.0;
