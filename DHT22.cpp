@@ -39,8 +39,6 @@
 #define TWO_SECONDS 2000
 #define TWO_MILLISECONDS 2
 
-
-
 // DH22 constructor, accepts Arduino digital I/O port number
 DHT22::DHT22(int port) {
   m_port = port;
@@ -147,8 +145,8 @@ void DHT22::fetchData() {
         if (lowCounter > 0) {                     // Byte 1: Relative Humidity LSB
           highCounter = waitForState(LOW);        // Byte 2: Temperature MSB
           if (highCounter > 0) {                  // Byte 3: Temperature LSB
-            int byteN = bitN >> 3;                // Byte 4: Checksum
-            m_data[byteN] = m_data[byteN] << 1;
+            int byteN = bitN/8;                   // Byte 4: Checksum
+            m_data[byteN] <<= 1;
             if (highCounter > lowCounter) {       // Low 50us, High 25us -> 0
               m_data[byteN] |= 1;                 // Low 50us, High 70us -> 1
             }
@@ -163,18 +161,10 @@ void DHT22::fetchData() {
     m_lastRead = millis();
 
     // Compute temperature and relative humidity if data is valid
-    union {
-      byte bytes[2];
-      short value;
-    };
-    int8_t checksum = m_data[0] + m_data[1] + m_data[2] + m_data[3];
+    byte checksum = m_data[0] + m_data[1] + m_data[2] + m_data[3];
     if (m_data[4] == checksum) {
-      bytes[1] = m_data[0];
-      bytes[0] = m_data[1];
-      m_relativeHumidity = value / 10.0;
-      bytes[1] = m_data[2];
-      bytes[0] = m_data[3];
-      m_temperature = value / 10.0;
+      m_relativeHumidity = (float(m_data[0])*256.0 + float(m_data[1]))/10.0;
+      m_temperature = (float(m_data[2])*256.0 + float(m_data[3]))/10.0;
     }
     else {
       m_relativeHumidity = 0.0;
